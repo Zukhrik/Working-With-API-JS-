@@ -1,5 +1,5 @@
 
-
+const baseURL = 'https://randomuser.me/api/'
 let usersProfile = document.getElementById('root')
 let popover = document.createElement('div')
 let overflow = document.createElement('div')
@@ -8,7 +8,7 @@ popover.classList.add('popover')
 document.body.append(popover)
 document.body.append(overflow)
 
-fetch('https://randomuser.me/api/?results=5')
+fetch(`${baseURL}?results=5`)
 .then(response => response.json())
 .then(function(data) {
 
@@ -102,8 +102,13 @@ fetch('https://randomuser.me/api/?results=5')
     const email = button.getAttribute('email')
     button.addEventListener('click', () => {
       const singleItem = data.filter(item => item.email === email)[0]
+      
       console.log(singleItem);
-
+      let popoverHeading = document.createElement('div')
+      popoverHeading.innerHTML = 'Detail information'
+      let closeBtn = document.createElement('button')
+      closeBtn.innerHTML = 'X'
+      popoverHeading.classList.add('popover-heading');
       let popoverInner = document.createElement('div')
       popoverInner.classList.add('popoverInner')
       
@@ -154,24 +159,19 @@ fetch('https://randomuser.me/api/?results=5')
       const {picture} = singleItem.picture
       const profileImg = document.createElement('img')
       profileImg.src = singleItem.picture.large
-      popover.appendChild(profileImg)
+      popoverInner.appendChild(profileImg)
 
-      //Popover Exit Button
-      let exitBtn = document.createElement('button')
-      exitBtn.innerHTML = 'X'
-      exitBtn.classList.add('exitBtn')
-      popover.appendChild(exitBtn)
-      exitBtn.addEventListener(mouseover, btnFunction)
-        function btnFunction () {
-          document.body.popover.exitBtn.style.border = 'red'
-        }
-      
-      
+      closeBtn.addEventListener('click', () => {
+        overflow.classList.remove('active')
+        popover.classList.remove('active')
+        popover.removeChild(popoverInner)
+        popover.removeChild(popoverHeading)
+      })
+  
       overflow.classList.add('active')
       popover.classList.add('active')
+      popoverHeading.appendChild(closeBtn)
+      popover.appendChild(popoverHeading)
       popover.appendChild(popoverInner)
     })
   }
-
-
-

@@ -77,10 +77,15 @@ body{
     flex-direction: column;
 }
 
-.exitBtn {
+.closeBtn {
     position: absolute;
     right: 15px;
     top: 15px;
     background: none;
     border: beige;
 }
+
+/* .exitBtn.active {
+    border: 1px solid red;
+    outline: none;
+} */
