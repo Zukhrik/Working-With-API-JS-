@@ -8,7 +8,7 @@ popover.classList.add('popover')
 document.body.append(popover)
 document.body.append(overflow)
 
-fetch(`${baseURL}?results=5`)
+fetch(`${baseURL}?results=6`)
 .then(response => response.json())
 .then(function(data) {
 
@@ -115,8 +115,16 @@ fetch(`${baseURL}?results=5`)
       //Profile Item
       const {title, first, last} = singleItem.name
       const h3 = document.createElement('h3')
-      h3.innerHTML = `${title} ${first} ${last}`
+      h3.innerHTML = `${title}. ${first} ${last}`
       popoverInner.appendChild(h3)
+
+      //Profile Image 
+      const {picture} = singleItem.picture
+      const profileImg = document.createElement('img')
+      profileImg.src = singleItem.picture.large
+      const popoverImg = document.createElement('div')
+      popoverImg.appendChild(profileImg)
+      popoverInner.appendChild(popoverImg)
 
       //Profile Country
       const {country} = singleItem.location
@@ -153,13 +161,6 @@ fetch(`${baseURL}?results=5`)
       // const emailSpan = document.createElement('span')
       // emailSpan.innerHTML = `<b>e-mail:</b> ${email}`
       // popoverInner.appendChild(emailSpan)
-
-
-      //Profile Image 
-      const {picture} = singleItem.picture
-      const profileImg = document.createElement('img')
-      profileImg.src = singleItem.picture.large
-      popoverInner.appendChild(profileImg)
 
       closeBtn.addEventListener('click', () => {
         overflow.classList.remove('active')
