@@ -6,6 +6,7 @@ body{
     padding: 0;
     min-height: 100vh;
     position: relative;
+    flex-direction: column;
 }
 
 .wrapper {
@@ -87,4 +88,8 @@ body{
 
 .popoverInner h3 {
     text-align: center;
+}
+
+.pageBtn {
+    margin: 5px;
 }

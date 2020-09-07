@@ -8,6 +8,7 @@ popover.classList.add('popover')
 document.body.append(popover)
 document.body.append(overflow)
 
+
 fetch(`${baseURL}?results=6`)
 .then(response => response.json())
 .then(function(data) {
@@ -176,3 +177,30 @@ fetch(`${baseURL}?results=6`)
       popover.appendChild(popoverInner)
     })
   }
+
+//Pagination Pages
+let paginationDiv = document.createElement('div')
+paginationDiv.classList.add('paginationDiv')
+
+//First Page
+let paginationBtn1 = document.createElement('button')
+paginationBtn1.classList.add('pageBtn')
+paginationBtn1.innerHTML = '1'
+paginationBtn1.addEventListener('click', () => {
+  
+})
+
+//Second Page
+let paginationBtn2 = document.createElement('button')
+paginationBtn2.classList.add('pageBtn')
+paginationBtn2.innerHTML = '2'
+
+//Third Page
+let paginationBtn3 = document.createElement('button')
+paginationBtn3.classList.add('pageBtn')
+paginationBtn3.innerHTML = '3'
+
+document.body.append(paginationDiv)
+paginationDiv.appendChild(paginationBtn1)
+paginationDiv.appendChild(paginationBtn2)
+paginationDiv.appendChild(paginationBtn3)
