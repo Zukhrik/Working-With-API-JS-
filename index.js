@@ -3,20 +3,34 @@ const baseURL = 'https://randomuser.me/api/'
 let usersProfile = document.getElementById('root')
 let popover = document.createElement('div')
 let overflow = document.createElement('div')
+let container = document.createElement("div");
 overflow.classList.add('overflow')
 popover.classList.add('popover')
 document.body.append(popover)
 document.body.append(overflow)
+usersProfile.appendChild(container)
+let profPage = null
+
+const initialParams = {
+  results: {key:"results", value: 6},
+  page: {key: 'page', value: 1}
+}
+
+const getList = (params = initialParams) => {
+
+  const {results, page} = params
+
+  fetch(`${baseURL}?${results.key}=${results.value}&${page.key}=${page.value}`)
+  .then(response => response.json())
+  .then(function(data) {
+  
+      console.log(data)
+  
+      drawItems(data)
+    });
+}
 
 
-fetch(`${baseURL}?results=6`)
-.then(response => response.json())
-.then(function(data) {
-
-    console.log(data)
-
-    drawItems(data)
-  });
 
   function drawItems (data) {
     for ( i = 0; i < data.results.length; i++ ) {
@@ -95,8 +109,9 @@ fetch(`${baseURL}?results=6`)
       divInner.classList.add('profile-content')
       div.append(img)
       div.append(divInner)
-      usersProfile.append(div)
+      container.append(div)
     }
+    profPage = document.querySelectorAll('.profPage')
   }
 
   function createEvent(button, data) {
@@ -185,22 +200,59 @@ paginationDiv.classList.add('paginationDiv')
 //First Page
 let paginationBtn1 = document.createElement('button')
 paginationBtn1.classList.add('pageBtn')
-paginationBtn1.innerHTML = '1'
-paginationBtn1.addEventListener('click', () => {
-  
-})
+paginationBtn1.setAttribute('value', 1)
+paginationBtn1.setAttribute('btnType', 'prev')
+paginationBtn1.innerHTML = 'prev'
 
 //Second Page
 let paginationBtn2 = document.createElement('button')
 paginationBtn2.classList.add('pageBtn')
-paginationBtn2.innerHTML = '2'
+paginationBtn2.innerHTML = 'next'
+paginationBtn2.setAttribute('value', 1)
+paginationBtn2.setAttribute('btnType', 'next')
 
 //Third Page
-let paginationBtn3 = document.createElement('button')
-paginationBtn3.classList.add('pageBtn')
-paginationBtn3.innerHTML = '3'
+// let paginationBtn3 = document.createElement('button')
+// paginationBtn3.classList.add('pageBtn')
+// paginationBtn3.innerHTML = '3'
 
 document.body.append(paginationDiv)
 paginationDiv.appendChild(paginationBtn1)
 paginationDiv.appendChild(paginationBtn2)
-paginationDiv.appendChild(paginationBtn3)
+// paginationDiv.appendChild(paginationBtn3)
+getList()
+
+const paggi_btn = document.querySelectorAll('.pageBtn')
+
+console.log(profPage);
+
+for(let i = 0; i < paggi_btn.length; i++) {
+  paggi_btn[i].addEventListener('click', () => {
+    const btnType = paggi_btn[i].getAttribute('btnType')
+    const value = Number(paggi_btn[i].getAttribute('value'))
+    
+    if(btnType === 'prev' && value !== 1){
+      const newParams = {...initialParams, page: {...initialParams.page, value: (value - 1)}}
+      
+      for(let j = 0; j < paggi_btn.length; j++) {
+        paggi_btn[j].setAttribute('value', value - 1)
+      }
+      for(let j = 0; j < profPage.length; j++) {
+        usersProfile.removeChild(profPage[j])
+      }
+      // getList(newParams)
+    }
+
+    if(btnType === 'next') {
+      const newParams = {...initialParams, page: {...initialParams.page, value: (value + 1)}}
+      for(let j = 0; j < paggi_btn.length; j++) {
+        paggi_btn[j].setAttribute('value', value + 1)
+      }
+      for(let j = 0; j < profPage.length; j++) {
+        usersProfile.removeChild(profPage[j])
+      
+      }
+      // getList(newParams)
+    }
+  })
+}
